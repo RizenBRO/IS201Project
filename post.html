@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="/css/scratchpage.css">
+</head>
+<body>
+
+    <div class="navbar alignment">
+        <a class="title reg" href="/index.html">Benson Ordyna</a>
+        <nav>
+            <a class="navitem" href="/index.html">HOME</a>
+            <a class="navitem" href="/about.html">Resume</a>
+            <a class="navitem" href="/contact.html">CONTACT</a>
+            <a class="navitem" href="#snake">Snake Game</a>
+        </nav>
+    </div>
+    <div class="horizontal-line"></div>
+    
+    <div class="main-content">
+        <div>
+            <p style="text-align:center">Why I love cajun crab - the spicy kick, the buttery garlic sauce, the messy fingers, and the pure joy of cracking open those shells. Make it feel like it's my ultimate comfort food and guilty pleasure all in one.</p>
+            <ol>
+                <li>I absolutely love Cajun crab
+                  <ul>
+                    <li>The spicy Cajun seasoning hits just right</li>
+                    <li>The buttery garlic sauce is heavenly</li>
+                    <li>Cracking the shells is part of the fun</li>
+                    <li>It’s messy, but that’s how you know it’s good</li>
+                  </ul>
+                </li>
+                <li>It’s my go-to comfort food</li>
+                <li>I could eat it every week and never get tired of it</li>
+              </ol>
+        </div>
+        <img src="/assets/img/seafood-boil.jpg" width="250px">
+    </div>
+
+    <div class="main-content">
+        <p>Here's a really good youtube video about Christ!</p>
+        <iframe width="560" height="315" src="https://www.youtube.com/embed/jv4TwoTKIos?si=Tl1f5LHE7Wyh4vRb" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+    </div>
+
+    <div class="main-content">
+        <p>Here's a interesting graph:</p>
+        <div class='tableauPlaceholder' id='viz1744954806151' style='position: relative'><noscript><a href='#'><img alt='DataPlusTV The Expanse ' src='https:&#47;&#47;public.tableau.com&#47;static&#47;images&#47;Q3&#47;Q39GYB2CG&#47;1_rss.png' style='border: none' /></a></noscript><object class='tableauViz'  style='display:none;'><param name='host_url' value='https%3A%2F%2Fpublic.tableau.com%2F' /> <param name='embed_code_version' value='3' /> <param name='path' value='shared&#47;Q39GYB2CG' /> <param name='toolbar' value='yes' /><param name='static_image' value='https:&#47;&#47;public.tableau.com&#47;static&#47;images&#47;Q3&#47;Q39GYB2CG&#47;1.png' /> <param name='animate_transition' value='yes' /><param name='display_static_image' value='yes' /><param name='display_spinner' value='yes' /><param name='display_overlay' value='yes' /><param name='display_count' value='yes' /><param name='language' value='en-US' /></object></div>                
+        <script type='text/javascript'>                    
+            var divElement = document.getElementById('viz1744954806151');                    
+            var vizElement = divElement.getElementsByTagName('object')[0];                    
+            vizElement.style.width='100%';vizElement.style.height='500px';                    
+            var scriptElement = document.createElement('script');                    
+            scriptElement.src = 'https://public.tableau.com/javascripts/api/viz_v1.js';                    
+            vizElement.parentNode.insertBefore(scriptElement, vizElement);                
+        </script>
+    </div>
+
+    <div class="main-content" id="snake">
+        <h2>Snake Game</h2>
+        <canvas id="gameCanvas" width="400" height="400" style="border:1px solid black;"></canvas>
+        <br>
+        <button onclick="startGame()">Start</button>
+        <button onclick="restartGame()">Restart</button>
+    
+        <script>
+            const canvas = document.getElementById("gameCanvas");
+            const ctx = canvas.getContext("2d");
+    
+            const box = 20;
+            let snake, direction, food, game;
+    
+            function initGame() {
+                snake = [{ x: 9 * box, y: 10 * box }];
+                direction = "RIGHT";
+                food = {
+                    x: Math.floor(Math.random() * 19) * box,
+                    y: Math.floor(Math.random() * 19) * box
+                };
+            }
+    
+            function draw() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+    
+                for (let i = 0; i < snake.length; i++) {
+                    ctx.fillStyle = i === 0 ? "green" : "lime";
+                    ctx.fillRect(snake[i].x, snake[i].y, box, box);
+                }
+    
+                ctx.fillStyle = "red";
+                ctx.fillRect(food.x, food.y, box, box);
+    
+                let headX = snake[0].x;
+                let headY = snake[0].y;
+    
+                if (direction === "LEFT") headX -= box;
+                if (direction === "RIGHT") headX += box;
+                if (direction === "UP") headY -= box;
+                if (direction === "DOWN") headY += box;
+    
+                if (headX === food.x && headY === food.y) {
+                    food = {
+                        x: Math.floor(Math.random() * 19) * box,
+                        y: Math.floor(Math.random() * 19) * box
+                    };
+                } else {
+                    snake.pop();
+                }
+    
+                const newHead = { x: headX, y: headY };
+    
+                if (
+                    headX < 0 || headX >= canvas.width ||
+                    headY < 0 || headY >= canvas.height ||
+                    snake.some(segment => segment.x === headX && segment.y === headY)
+                ) {
+                    clearInterval(game);
+                    alert("Game Over!");
+                }
+    
+                snake.unshift(newHead);
+            }
+    
+            document.addEventListener("keydown", event => {
+                if (event.key === "ArrowLeft" && direction !== "RIGHT") direction = "LEFT";
+                else if (event.key === "ArrowUp" && direction !== "DOWN") direction = "UP";
+                else if (event.key === "ArrowRight" && direction !== "LEFT") direction = "RIGHT";
+                else if (event.key === "ArrowDown" && direction !== "UP") direction = "DOWN";
+            });
+    
+            function startGame() {
+                clearInterval(game);
+                initGame();
+                game = setInterval(draw, 100);
+            }
+    
+            function restartGame() {
+                clearInterval(game);
+                startGame();
+            }
+    
+            // Do not start the game on load!
+        </script>
+    </div>
+    
+
+</body>
+</html>
